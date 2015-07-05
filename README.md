@@ -1,3 +1,4 @@
 # CONCURRENCY IN OBJECT ORIENTED VERSUS FUNCTIONAL PROGRAMMING LANGUAGES
 
-My Computer Science Master disertation. Presentation with Impress.js included
+My Computer Science Master disertation. Presentation with Impress.js included, created with strut.io
+
