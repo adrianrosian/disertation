@@ -1,0 +1,404 @@
+<html style="height: 100%;"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>OOP vs. Functional din perspectiva concurentei</title>
+
+<meta name="description" content="TODO">
+<meta name="author" content="TODO">
+
+<style>
+.componentContainer {
+    position: absolute;
+    line-height: normal;
+    /*-webkit-transform-origin: 135% 135%;
+    -moz-transform-origin: 135% 135%;
+    transform-origin: 135% 135%;*/
+}
+
+.transformContainer {
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.bg {
+    width: 100%;
+    height: 100%;
+}
+</style>
+
+<link rel="stylesheet" href="oop-vs-functional-concurr_fi%C8%99iere/default-reset.css">
+<link href="oop-vs-functional-concurr_fi%C8%99iere/main.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="oop-vs-functional-concurr_fi%C8%99iere/default.css" id="theme">
+<link href="oop-vs-functional-concurr_fi%C8%99iere/web-fonts.css" rel="stylesheet" type="text/css">
+<link href="oop-vs-functional-concurr_fi%C8%99iere/backgroundClasses.css" rel="stylesheet" type="text/css">
+<link href="oop-vs-functional-concurr_fi%C8%99iere/surfaceClasses.css" rel="stylesheet" type="text/css">
+
+<link rel="shortcut icon" href="http://strut.io/editor/preview_export/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="http://strut.io/editor/preview_export/apple-touch-icon.png" type="image/png">
+
+<style>
+.reveal.themedArea {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+}
+</style>
+
+<script src="oop-vs-functional-concurr_fi%C8%99iere/analytics.js" async=""></script><script type="text/javascript" src="oop-vs-functional-concurr_fi%C8%99iere/dataset-shim.js"></script>
+<script type="text/javascript" src="oop-vs-functional-concurr_fi%C8%99iere/impress.js"></script>
+
+<script src="oop-vs-functional-concurr_fi%C8%99iere/onready.js"></script>
+<script src="oop-vs-functional-concurr_fi%C8%99iere/loadPresentation.js"></script>
+<script>
+ready(function() {
+    if (document.getElementById('launched-placeholder'))
+        loadPresentation();
+
+    if (!window.presStarted) {
+        startPres(document, window);
+        impress().init();
+    }
+
+    if ("ontouchstart" in document.documentElement) {
+        document.querySelector(".hint").innerHTML =
+            "<p>Tap on the left or right to navigate</p>";
+    }
+});
+</script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42322531-1', 'strut.io');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body style="height: 100%; overflow: hidden;" class="impress-supported impress-enabled">
+<style type="text/css">
+
+</style>
+<style>
+
+</style>
+<style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+<!-- This is a work around / hack to get the user's browser to download the fonts
+ if they decide to save the presentation. -->
+<div style="visibility: hidden; width: 0px; height: 0px">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/Lato-Bold.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/HammersmithOne.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/Droid-Sans-Mono.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/Gorditas-Regular.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/FredokaOne-Regular.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/Ubuntu.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/Ubuntu-Bold.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/PressStart2P-Regular.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/Lato-BoldItalic.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/AbrilFatface-Regular.bin">
+<img src="oop-vs-functional-concurr_fi%C8%99iere/Lato-Regular.bin">
+</div>
+
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div class="bg bg-surf-grad-light strut-surface">
+<div class="bg innerBg strut-slide-0 bg-surf-grad-light">
+<div style="position: absolute; transform-origin: left top 0px; transition: all 0ms ease-in-out 0ms; transform-style: preserve-3d; top: 50%; left: 50%; transform: perspective(3000px) scale(0.333333);" id="impress"><div style="position: absolute; transform-origin: left top 0px; transition: all 0ms ease-in-out 0ms; transform-style: preserve-3d; transform: rotateZ(0deg) rotateY(0deg) rotateX(0deg) translate3d(-2457.6px, -2764.8px, 0px);">
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(2457.6px, 2764.8px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(3); transform-style: preserve-3d;" id="step-1" class="step active present" data-state="strut-slide-0 bg-surf-grad-light " data-x="2457.6" data-y="2764.8" data-scale="3">
+			<div class=" slideContainer strut-slide-0" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h1 id="oop-vs-functional-din-perspectiva-concurentei">OOP vs functional din perspectiva concurentei</h1>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(6280.53px, 2764.8px, 0px) rotateX(0deg) rotateY(89.9544deg) rotateZ(0deg) scale(3); transform-style: preserve-3d;" id="step-2" class="step future" data-state="strut-slide-1 bg-surf-grad-light " data-x="6280.533333333334" data-y="2764.8" data-rotate-y="89.95437383553926" data-scale="3">
+			<div class=" slideContainer strut-slide-1" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="sa-ne-intelegem-">Sa ne intelegem..</h2>
+<ul>
+<li>Concurenta = structurarea programelor pe fire logice de executie ce pot rula sau nu in paralel</li>
+<li>OOP = programarea orientata obiecte, subset al programarii imperative</li>
+<li>programare functionala - nu doar programare cu functii, ci programare in care functiile sunt   cetateni cu drepturi depline</li>
+</ul>
+<pre><code>(defn bits-to-byte [byt]
+    (letfn [
+        (bit-red [acc el]
+            (+ (bit-shift-left (int acc) 1) (int el)))]
+        (reduce  bit-red byt)))
+
+(defn bit-list-bytes [bits]
+    (map bits-to-byte (partition-all 8 bits)))</code></pre>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(10103.5px, 2764.8px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(89.9544deg) scale(3); transform-style: preserve-3d;" id="step-3" class="step future" data-state="strut-slide-2 bg-surf-grad-light " data-x="10103.466666666667" data-y="2764.8" data-rotate-z="89.95437383553926" data-scale="3">
+			<div class=" slideContainer strut-slide-2" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="de-ce-inca-o-abordare">De ce inca o abordare</h2>
+<ul>
+<li>legea lui Moore nu se mai aplica la procesoarele actuale (poate quantum computers?) =&gt; scalabilitate prin paralelizare</li>
+<li>Internet of Things - cand uscatorul tau de par e online =&gt; servicii web care trebuiesc sincronizate</li>
+<li>programarea in general si concurenta in particular sunt dificile,
+software development rezolva problemele auxiliare mai mult decat cea
+principala</li>
+</ul>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(13926.4px, 2764.8px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(3); transform-style: preserve-3d;" id="step-4" class="step future" data-state="strut-slide-3 bg-surf-grad-light " data-x="13926.4" data-y="2764.8" data-scale="3">
+			<div class=" slideContainer strut-slide-3" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="concurenta-in-oop">Concurenta in OOP</h2>
+<ul>
+<li>threaduri sau procese</li>
+<li>de sistem sau ale masinii virtuale</li>
+<li>care comunica sau nu</li>
+<li>mecanisme de pastrare a consistentei in comunicare: locks, semaphores</li>
+</ul>
+<pre><code>    # Set the lock and the manager for the shared memory
+    lock = Lock()
+    manager = Manager()
+
+    # Define shared memory
+    sensorData = manager.list()
+    command = manager.list()
+    databaseName = manager.Value('u', args.database)
+
+    # Start processes
+    readProc = Process(target=readProcess, args=(lock, sensorData, command,
+                                                    databaseName))
+    readProc.start()
+    serverProc = Process(target=serverProcess, args=(lock, sensorData, command))
+    serverProc.start()</code></pre>
+<ul>
+<li>complex - probleme in gestionare: livelock, deadlock</li>
+<li>complex - greu de pastrat evidenta (pentru debugging)</li>
+</ul>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(17749.3px, 2764.8px, 0px) rotateX(0deg) rotateY(89.9544deg) rotateZ(0deg) scale(3); transform-style: preserve-3d;" id="step-5" class="step future" data-state="strut-slide-4 bg-surf-grad-light " data-x="17749.333333333332" data-y="2764.8" data-rotate-y="89.95437383553926" data-scale="3">
+			<div class=" slideContainer strut-slide-4" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="de-unde-ni-se-trage-">De unde ni se trage?</h2>
+<ul>
+<li>read-update si atomicitatea</li>
+<li>state management</li>
+<li>state-ul este o consecinta a timpului - program fara timp, streams (<em>Structure and interpretation of computer programs</em>)</li>
+</ul>
+<pre><code>(define (stream-withdraw balance amount-stream)
+    (cons-stream
+        balance
+        (stream-withdraw (- balance (stream-car amount-stream))
+            (stream-cdr amount-stream))))</code></pre>
+<ul>
+<li>timpul nu exista - <em>Time is a device that was invented to keep everything from happening at once.</em></li>
+</ul>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(21572.3px, 2764.8px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(89.9544deg) scale(3); transform-style: preserve-3d;" id="step-6" class="step future" data-state="strut-slide-5 bg-surf-grad-light " data-x="21572.266666666666" data-y="2764.8" data-rotate-z="89.95437383553926" data-scale="3">
+			<div class=" slideContainer strut-slide-5" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="abordarea-functionala">Abordarea functionala</h2>
+<ul>
+<li>schimbare de optica, state-ul este constientizat</li>
+<li>limbaje fuctionale pure versus limbaje impure - o chestiune de emfaza: monade versus semnul exclamarii</li>
+</ul>
+<pre><code>    add :: Maybe Int -&gt; Maybe Int -&gt; Maybe Int
+    add mx my =
+          case mx of
+            Nothing -&gt; Nothing
+            Just x  -&gt; case my of
+                   Nothing -&gt; Nothing
+                   Just y  -&gt; Just (x + y)</code></pre>
+<p> vs.</p>
+<pre><code>     (defonce channels (atom #{}))
+
+    (defn handle-new-connection [channel]
+        (swap! channels conj channel))</code></pre>
+<ul>
+<li>concurenta auxiliara, aceleasi mecanisme ca in OOP, managementul state-ului diferit</li>
+<li>atomi, STM, canale, actori</li>
+</ul>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(2321.07px, 6405.12px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(89.9544deg) scale(3); transform-style: preserve-3d;" id="step-7" class="step future" data-state="strut-slide-6 bg-surf-grad-light " data-x="2321.0666666666666" data-y="6405.12" data-rotate-z="89.95437383553926" data-scale="3">
+			<div class=" slideContainer strut-slide-6" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="abordarea-functionala-2-">Abordarea functionala (2)</h2>
+<h3 id="software-transactional-memory">Software Transactional Memory</h3>
+<ul>
+<li>caz particular, atomii (vezi <em>swap</em> in Clojure)</li>
+<li>caz general, modelat dupa tranzactiile din BD</li>
+</ul>
+<pre><code>      (def acc-bob (ref 100))
+          (def acc-sam (ref 300))
+
+      (defn transfer [from to amount]
+          (dosync
+              (alter from - amount)
+              (alter to + amount)))
+
+      (transfer acc-bob acc-sam 10)</code></pre>
+<p> Tranzactiile sunt reincercate daca oricare din declaratii cad (rollback + retry)</p>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(6403.41px, 6374.4px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(3); transform-style: preserve-3d;" id="step-8" class="step future" data-state="strut-slide-7 bg-surf-grad-light " data-x="6403.413333333333" data-y="6374.4" data-scale="3">
+			<div class=" slideContainer strut-slide-7" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="abordarea-functionala-3-">Abordarea functionala (3)</h2>
+<h3 id="actor-model">Actor model</h3>
+<ul>
+<li>nascut in anii '70, popularizat de Erlang</li>
+<li>fiecare proces e un <em>Actor</em> ce poate comunica prin mesaje cu celelalte procese</li>
+<li>starea este pasata de la un proces la celalalt prin mesaje: <em>Do not communicate by sharing, share by communicating</em></li>
+</ul>
+<pre><code>-module(presence_websocket,[Req, SessionId]).
+-compile(export_all).
+
+init() -&gt;
+    State = [],
+    {ok, State}.
+
+% Handles a client joining the server.
+handle_join(Url, Pid, State) -&gt;
+    UserInfo = login_helper:isLoggedIn(SessionId),
+    case UserInfo of
+        undefined -&gt; {stop, "Unauthenticated", State};
+        Admin -&gt; {noreply, State ++ [Pid]}
+    end.</code></pre>
+
+			</div>
+
+			</div>
+
+		</div>
+
+
+			<div style="position: absolute; transform: translate(-50%, -50%) translate3d(10308.3px, 6359.04px, 50px) rotateX(0deg) rotateY(89.9544deg) rotateZ(0deg) scale(3); transform-style: preserve-3d;" id="step-9" class="step future" data-state="strut-slide-8 bg-surf-grad-light " data-x="10308.266666666666" data-y="6359.04" data-rotate-y="89.95437383553926" data-z="50" data-scale="3">
+			<div class=" slideContainer strut-slide-8" style="width: 1024px; height: 768px;">
+			<div class="themedArea">
+			<h2 id="concluzii">Concluzii</h2>
+<ul>
+<li>problemele in cazul concurentei sunt generate de <em>State</em></li>
+<li><em>State</em>-ul este cauzat de perceptia noastra asupra timpului</li>
+<li>cat timp nu schimbam lumea, trebuie sa schimbam managementul <em>State</em>-ului</li>
+<li>abordarea functionala este mai putin complexa odata inteleasa</li>
+<li>abordarea functionala are cateva idei bune (monade, actori, map-reduce, tranzactii) dar nu are o abordare unitara</li>
+<li>limbajele functionale pure si cu un <em>type system</em> solid sunt greoaie (Haskell, OCaml)</li>
+<li>limbajele impure pot duce la un management defectuos al <em>State</em>-ului</li>
+</ul>
+
+			</div>
+
+			</div>
+
+		</div>
+
+	<div style="position: absolute; transform: translate(-50%, -50%) translate3d(11946.7px, 4584.96px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(9); transform-style: preserve-3d;" id="overview" class="step future" data-state="strut-slide-overview" data-x="11946.666666666666" data-y="4584.96" data-scale="9"></div>
+
+</div></div>
+<div class="hint">
+    <p>Use a spacebar or arrow keys to navigate</p>
+</div>
+</div>
+</div></body></html>
